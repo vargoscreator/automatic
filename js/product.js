@@ -1,4 +1,4 @@
-let clauseSwiper = new Swiper(".product__slider", {
+let productSwiper = new Swiper(".product__slider", {
     loop: false,
     spaceBetween: 8,
     slidesPerView: 1,
@@ -37,3 +37,33 @@ function closePopup() {
     popupVideo.currentTime = 0;
 }
 closePopup()
+
+
+
+let accessoriesSwiper = new Swiper(".accessories__slider", {
+    loop: false,
+    spaceBetween: 10,
+    slidesPerView: 2,
+    allowTouchMove: true,
+    breakpoints: {
+        768: {
+            spaceBetween: 20,
+            slidesPerView: 3,
+        },
+        1000: {
+            spaceBetween: 30,
+            slidesPerView: 4,
+        },
+    },
+    navigation: {
+        nextEl: ".accessories__btn-next",
+        prevEl: ".accessories__btn-prev",
+    },
+    pagination: {
+        el: '.accessories__slider-pagination',
+        clickable: true,
+        renderBullet: function (index, className) {
+            return `<span class="pages-item ${className}">${index + 1}</span>`;
+        },
+    },
+});

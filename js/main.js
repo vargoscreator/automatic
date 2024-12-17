@@ -20,14 +20,14 @@ let clauseSwiper = new Swiper(".interested__slider", {
     },
 });
 var swiper = new Swiper(".elements__thumbs", {
-    loop: true,
+    loop: false,
     spaceBetween: 6,
     slidesPerView: 4,
     freeMode: true,
     watchSlidesProgress: true,
 });
 var swiper2 = new Swiper(".elements__slider", {
-    loop: true,
+    loop: false,
     spaceBetween: 10,
     effect: "fade",
     allowTouchMove: false,
@@ -55,22 +55,24 @@ document.addEventListener("click", function(event) {
     });
 });
 
-
-const ElementsButtons = document.querySelectorAll('.elements__select-btn');
-ElementsButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const dataGen = button.getAttribute('data-gen');
-        if (dataGen === 'gen-first') {
-            document.querySelectorAll('.gen-first').forEach(el => el.classList.add('active'));
-            document.querySelectorAll('.gen-second').forEach(el => el.classList.remove('active'));            
-        } else if (dataGen === 'gen-second') {
-            document.querySelectorAll('.gen-first').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.gen-second').forEach(el => el.classList.add('active'));
-        }
-        ElementsButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
+if(document.querySelectorAll('.elements__select-btn')){
+    const ElementsButtons = document.querySelectorAll('.elements__select-btn');
+    ElementsButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const dataGen = button.getAttribute('data-gen');
+            if (dataGen === 'gen-first') {
+                document.querySelectorAll('.gen-first').forEach(el => el.classList.add('active'));
+                document.querySelectorAll('.gen-second').forEach(el => el.classList.remove('active'));            
+            } else if (dataGen === 'gen-second') {
+                document.querySelectorAll('.gen-first').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.gen-second').forEach(el => el.classList.add('active'));
+            }
+            ElementsButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        });
     });
-});
+}
+
 
 document.querySelectorAll('.elements__slide-btn span').forEach((btn) => {
     const delay = Math.random() * 1;
@@ -81,7 +83,7 @@ const elementsbox = document.querySelector('.elements__box');
     const elementsimage = document.querySelector('.elements__box-image');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting && window.innerWidth > 768) {
+        if (entry.isIntersecting) {
           elementsimage.classList.add('active');
         }    
       });
@@ -91,7 +93,7 @@ const elementsbox = document.querySelector('.elements__box');
     const elementsBlockimage = document.querySelector('.elements__block-image');
     const observerBlock = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting && window.innerWidth > 768) {
+          if (entry.isIntersecting) {
             elementsBlockimage.classList.add('active');
           }    
         });
@@ -101,7 +103,7 @@ const elementsbox = document.querySelector('.elements__box');
     const elementsItems = document.querySelectorAll('.elements__item');
     const observerItems = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting && window.innerWidth > 768) {
+        if (entry.isIntersecting) {
           entry.target.classList.add('active');
         }
       });
@@ -109,12 +111,15 @@ const elementsbox = document.querySelector('.elements__box');
     elementsItems.forEach(item => observerItems.observe(item));
   
 function checkScroll() {
-    const header = document.querySelector('.header-main');
-    if (window.scrollY > 10) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
+    if(document.querySelector('.header-main')){
+        const header = document.querySelector('.header-main');
+        if (window.scrollY > 10) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
     }
+
 }
 checkScroll()
 window.addEventListener('resize', checkScroll);
@@ -127,12 +132,8 @@ elementsThumbs.addEventListener('click', () => {
     images.forEach(image => image.classList.remove('zoomed'));
     elementsSlider.classList.remove('active');
 });
-function isMobile() {
-    return window.innerWidth < 768;
-}
 images.forEach((image, index) => {
     image.addEventListener('click', function (event) {
-        if (!isMobile()) return;
         const button = event.target.closest('.elements__slide-btn');
         if (button) {
             if (!image.classList.contains('zoomed')) {
@@ -187,13 +188,11 @@ slideContents.forEach(slider => {
         document.removeEventListener('touchend', onTouchEnd);
     };
     slider.addEventListener('mousedown', (e) => {
-        if (!isMobile()) return;
         startX = e.clientX;
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
     });
     slider.addEventListener('touchstart', (e) => {
-        if (!isMobile()) return;
         startX = e.touches[0].clientX;
         document.addEventListener('touchmove', onTouchMove);
         document.addEventListener('touchend', onTouchEnd);
